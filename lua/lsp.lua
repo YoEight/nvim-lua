@@ -1,3 +1,4 @@
+local pid = vim.fn.getpid()
 local nvim_lsp = require('lspconfig')
 
 -- Use an on_attach function to only map the following keys 
@@ -39,3 +40,17 @@ local servers = { "rust_analyzer" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup { on_attach = on_attach }
 end
+
+nvim_lsp.rust_analyzer.setup {
+    on_attach = on_attach
+}
+
+nvim_lsp.omnisharp.setup {
+    on_attach = on_attach,
+    cmd = { "/home/yoeight/omnisharp-mono/run", "--languageserver", "--hostPID", tostring(pid) }
+}
+
+nvim_lsp.gopls.setup {
+    on_attach = on_attach,
+    -- cmd = { "gopls", "serve" }
+}
