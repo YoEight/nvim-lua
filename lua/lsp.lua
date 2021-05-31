@@ -31,14 +31,6 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
   buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-
-end
-
--- Use a loop to conveniently call 'setup' on multiple servers and
--- map buffer local keybindings when the language server attaches
-local servers = { "rust_analyzer" }
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup { on_attach = on_attach }
 end
 
 nvim_lsp.rust_analyzer.setup {
@@ -52,5 +44,4 @@ nvim_lsp.omnisharp.setup {
 
 nvim_lsp.gopls.setup {
     on_attach = on_attach,
-    -- cmd = { "gopls", "serve" }
 }
