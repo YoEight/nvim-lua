@@ -19,7 +19,9 @@ common.map('n', '<leader>ws', ':split<cr>')
 common.map('n', '<leader>wk', ':wincmd k<cr>')
 common.map('n', '<leader>wj', ':wincmd j<cr>')
 common.map('n', '<leader>wh', ':wincmd h<cr>')
+-- For some reason, the mapping below is not working. Might have an overlapping keybinding.
 common.map('n', '<leader>wl', ':wincmd l<cr>')
+common.map('n', '<leader>ww', ':wincmd w<cr>')
 
 -- Misc
 common.map('n', '<leader>q', ':q<cr>')
