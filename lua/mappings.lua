@@ -3,10 +3,15 @@ vim.g.mapleader = ' '
 local common = require 'common'
 
 -- Telescope
-common.map('n', '<leader>ff', "<cmd>lua require('telescope.builtin').find_files()<cr>")
-common.map('n', '<leader>fg', "<cmd>lua require('telescope.builtin').live_grep()<cr>")
-common.map('n', '<leader>fb', "<cmd>lua require('telescope.builtin').buffers()<cr>")
-common.map('n', '<leader>fh', "<cmd>lua require('telescope.builtin').help_tags()<cr>")
+-- common.map('n', '<leader>ff', "<cmd>lua require('telescope.builtin').find_files()<cr>")
+-- common.map('n', '<leader>fg', "<cmd>lua require('telescope.builtin').live_grep()<cr>")
+-- common.map('n', '<leader>fb', "<cmd>lua require('telescope.builtin').buffers()<cr>")
+-- common.map('n', '<leader>fh', "<cmd>lua require('telescope.builtin').help_tags()<cr>")
+
+-- Fzf
+common.map('n', '<leader>ff', ":GFiles<cr>")
+common.map('n', '<leader>gf', ":Files<cr>")
+common.map('n', '<leader>b', ":Buffers<cr>")
 
 -- Nvim Tree
 -- common.map('n', '<C-n>', ':NvimTreeToggle<cr>')

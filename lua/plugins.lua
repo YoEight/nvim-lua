@@ -5,11 +5,15 @@ return require('packer').startup(function(use)
     use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
     use 'neovim/nvim-lspconfig'
     use 'eddyekofo94/gruvbox-flat.nvim'
+    use 'navarasu/onedark.nvim'
 
-    use {
-        'nvim-telescope/telescope.nvim',
-        requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
-    }
+    -- use {
+    --     'nvim-telescope/telescope.nvim',
+    --     requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
+    -- }
+
+    use 'junegunn/fzf'
+    use 'junegunn/fzf.vim'
 
     use 'kyazdani42/nvim-web-devicons' -- for file icons
     use 'kyazdani42/nvim-tree.lua'
