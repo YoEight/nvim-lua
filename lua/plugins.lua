@@ -27,4 +27,5 @@ return require('packer').startup(function(use)
 
     use 'glepnir/dashboard-nvim'
     use 'ntpeters/vim-better-whitespace'
+    use 'xiyaowong/nvim-transparent'
 end)
