@@ -22,6 +22,10 @@ require('packer').startup(function(use)
     },
   }
 
+  -- Debugging
+  use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
+  use 'leoluz/nvim-dap-go'
+
   use { -- Autocompletion
     'hrsh7th/nvim-cmp',
     requires = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
@@ -184,6 +188,14 @@ vim.keymap.set('n', '<leader>wc', ':wincmd c<cr>')
 -- Terminal Toggle
 vim.keymap.set('t', '<esc>', [[<C-\><C-n>]])
 
+-- Debugging mappings
+vim.keymap.set('n', '<F5>', ":lua require('dap').continue()<cr>")
+vim.keymap.set('n', '<leader>dn', ":lua require('dap').step_over()<cr>")
+vim.keymap.set('n', '<leader>di', ":lua require('dap').step_into()<cr>")
+vim.keymap.set('n', '<leader>do', ":lua require('dap').step_out()<cr>")
+vim.keymap.set('n', '<leader>dv', ":lua require('dapui').toggle()<cr>")
+vim.keymap.set('n', '<leader>b', ":lua require('dap').toggle_breakpoint()<cr>")
+
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -194,6 +206,10 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
+
+-- Debugging configuration
+require('dapui').setup()
+require('dap-go').setup()
 
 require('catppuccin').setup({
   no_italic = true,
@@ -259,6 +275,7 @@ vim.keymap.set('n', '<leader>/', function()
   })
 end, { desc = '[/] Fuzzily search in current buffer]' })
 
+vim.keymap.set('n', '<leader>sb', require('telescope.builtin').buffers, { desc = '[S]earch [B]Buffers' })
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sgf', require('telescope.builtin').git_files, { desc = '[S]earch [G]it [F]iles' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
