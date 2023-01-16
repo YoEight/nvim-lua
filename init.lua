@@ -189,7 +189,15 @@ vim.keymap.set('n', '<leader>wc', ':wincmd c<cr>')
 vim.keymap.set('t', '<esc>', [[<C-\><C-n>]])
 
 -- Debugging mappings
-vim.keymap.set('n', '<F5>', ":lua require('dap').continue()<cr>")
+vim.keymap.set('n', '<F5>', function()
+  local filetype = vim.bo.filetype
+
+  if (filetype == "go") then
+    require('dap-go').debug_test()
+  else
+    require('dap').continue()
+  end
+end)
 vim.keymap.set('n', '<leader>dn', ":lua require('dap').step_over()<cr>")
 vim.keymap.set('n', '<leader>di', ":lua require('dap').step_into()<cr>")
 vim.keymap.set('n', '<leader>do', ":lua require('dap').step_out()<cr>")
@@ -210,6 +218,24 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- Debugging configuration
 require('dapui').setup()
 require('dap-go').setup()
+
+local dap = require('dap')
+dap.adapters.coreclr = {
+  type = 'executable',
+  command = 'netcoredbg',
+  args = {'--interpreter=vscode'}
+}
+
+dap.configurations.cs = {
+  {
+    type = "coreclr",
+    name = "launch - netcoredbg",
+    request = "launch",
+    program = function()
+        return vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/', 'file')
+    end,
+  },
+}
 
 require('catppuccin').setup({
   no_italic = true,
