@@ -22,6 +22,8 @@ require('packer').startup(function(use)
     },
   }
 
+  use 'nvim-tree/nvim-web-devicons'
+
   -- Debugging
   use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
   use 'leoluz/nvim-dap-go'
@@ -61,7 +63,12 @@ require('packer').startup(function(use)
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
 
   -- File tree
-  use 'nvim-tree/nvim-tree.lua'
+  use {
+    'nvim-tree/nvim-tree.lua',
+    requires = {
+      'nvim-tree/nvim-web-devicons',
+    }
+  }
 
   -- Toggle term
   use { 'akinsho/toggleterm.nvim', tag = '*', config = function()
@@ -215,6 +222,9 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
+-- UI stuff
+require('nvim-web-devicons').setup()
+
 -- Debugging configuration
 require('dapui').setup()
 require('dap-go').setup()
@@ -245,7 +255,7 @@ require('catppuccin').setup({
 -- See `:help lualine.txt`
 require('lualine').setup {
   options = {
-    icons_enabled = false,
+    icons_enabled = true,
     theme = 'catppuccin',
     component_separators = '|',
     section_separators = '',
@@ -467,18 +477,7 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 -- Turn on lsp status information
 require('fidget').setup()
-
-require("nvim-tree").setup({
-  renderer = {
-    icons = {
-      show = {
-        file = false,
-        git = false,
-        folder_arrow = false,
-      }
-    }
-  }
-})
+require("nvim-tree").setup()
 
 -- nvim-cmp setup
 local cmp = require 'cmp'
