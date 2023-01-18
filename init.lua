@@ -77,6 +77,10 @@ require('packer').startup(function(use)
     })
   end}
 
+  -- My custom stuff
+  -- TODO require DAP to be available
+  use './debugger.nvim'
+
   -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
   local has_plugins, plugins = pcall(require, 'custom.plugins')
   if has_plugins then
@@ -246,6 +250,8 @@ dap.configurations.cs = {
     end,
   },
 }
+
+require('debugger').setup()
 
 require('catppuccin').setup({
   no_italic = true,
