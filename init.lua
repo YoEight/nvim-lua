@@ -22,6 +22,12 @@ require('packer').startup(function(use)
     },
   }
 
+  use 'nvim-tree/nvim-web-devicons'
+
+  -- Debugging
+  use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
+  use 'leoluz/nvim-dap-go'
+
   use { -- Autocompletion
     'hrsh7th/nvim-cmp',
     requires = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
@@ -57,7 +63,12 @@ require('packer').startup(function(use)
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
 
   -- File tree
-  use 'nvim-tree/nvim-tree.lua'
+  use {
+    'nvim-tree/nvim-tree.lua',
+    requires = {
+      'nvim-tree/nvim-web-devicons',
+    }
+  }
 
   -- Toggle term
   use { 'akinsho/toggleterm.nvim', tag = '*', config = function()
@@ -65,6 +76,10 @@ require('packer').startup(function(use)
       open_mapping = [[<C-\>]],
     })
   end}
+
+  -- My custom stuff
+  -- TODO require DAP to be available
+  use './debugger.nvim'
 
   -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
   local has_plugins, plugins = pcall(require, 'custom.plugins')
@@ -184,6 +199,22 @@ vim.keymap.set('n', '<leader>wc', ':wincmd c<cr>')
 -- Terminal Toggle
 vim.keymap.set('t', '<esc>', [[<C-\><C-n>]])
 
+-- Debugging mappings
+vim.keymap.set('n', '<F5>', function()
+  local filetype = vim.bo.filetype
+
+  if (filetype == "go") then
+    require('dap-go').debug_test()
+  else
+    require('dap').continue()
+  end
+end)
+vim.keymap.set('n', '<leader>dn', ":lua require('dap').step_over()<cr>")
+vim.keymap.set('n', '<leader>di', ":lua require('dap').step_into()<cr>")
+vim.keymap.set('n', '<leader>do', ":lua require('dap').step_out()<cr>")
+vim.keymap.set('n', '<leader>dv', ":lua require('dapui').toggle()<cr>")
+vim.keymap.set('n', '<leader>b', ":lua require('dap').toggle_breakpoint()<cr>")
+
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -195,6 +226,33 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
+-- UI stuff
+require('nvim-web-devicons').setup()
+
+-- Debugging configuration
+require('dapui').setup()
+require('dap-go').setup()
+
+local dap = require('dap')
+dap.adapters.coreclr = {
+  type = 'executable',
+  command = 'netcoredbg',
+  args = {'--interpreter=vscode'}
+}
+
+dap.configurations.cs = {
+  {
+    type = "coreclr",
+    name = "launch - netcoredbg",
+    request = "launch",
+    program = function()
+        return vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/', 'file')
+    end,
+  },
+}
+
+require('debugger').setup()
+
 require('catppuccin').setup({
   no_italic = true,
 })
@@ -203,7 +261,7 @@ require('catppuccin').setup({
 -- See `:help lualine.txt`
 require('lualine').setup {
   options = {
-    icons_enabled = false,
+    icons_enabled = true,
     theme = 'catppuccin',
     component_separators = '|',
     section_separators = '',
@@ -259,6 +317,7 @@ vim.keymap.set('n', '<leader>/', function()
   })
 end, { desc = '[/] Fuzzily search in current buffer]' })
 
+vim.keymap.set('n', '<leader>sb', require('telescope.builtin').buffers, { desc = '[S]earch [B]Buffers' })
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sgf', require('telescope.builtin').git_files, { desc = '[S]earch [G]it [F]iles' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
@@ -424,18 +483,7 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 -- Turn on lsp status information
 require('fidget').setup()
-
-require("nvim-tree").setup({
-  renderer = {
-    icons = {
-      show = {
-        file = false,
-        git = false,
-        folder_arrow = false,
-      }
-    }
-  }
-})
+require("nvim-tree").setup()
 
 -- nvim-cmp setup
 local cmp = require 'cmp'

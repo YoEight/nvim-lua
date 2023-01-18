@@ -1,0 +1,3 @@
+[submodule "debugger.nvim/lib/json.lua"]
+	path = debugger.nvim/lib/json.lua
+	url = https://github.com/rxi/json.lua
