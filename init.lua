@@ -224,11 +224,11 @@ require('indent_blankline').setup {
 -- See `:help gitsigns.txt`
 require('gitsigns').setup {
   signs = {
-    add = { text = '+' },
-    change = { text = '~' },
-    delete = { text = '_' },
-    topdelete = { text = '‾' },
-    changedelete = { text = '~' },
+    add = { text = '│' },
+    change = { text = '│' },
+    delete = { text = '│' },
+    topdelete = { text = '│' },
+    changedelete = { text = '│' },
   },
 }
 
@@ -276,7 +276,6 @@ require('nvim-treesitter.configs').setup {
     'lua',
     'rust',
     'typescript',
-    'help',
     'vim',
     'c_sharp',
     'java',
@@ -396,7 +395,7 @@ end
 
 local servers = {
   "rust_analyzer",
-  "sumneko_lua",
+  "lua_ls",
   "gopls",
   "jdtls",
   "omnisharp",
