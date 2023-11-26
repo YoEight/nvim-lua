@@ -4,6 +4,11 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 local root_dir = vim.fs.dirname(vim.fs.find(java_root_markers, { upward = true })[1])
 local java_workspace_folder = home .. "/.local/share/eclipse/" .. vim.fn.fnamemodify(root_dir, "p:h:t")
 local jdtls = require("jdtls")
+local bundles = {
+  vim.fn.glob(home .. "/lsp/java/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar", true)
+}
+
+vim.list_extend(bundles, vim.split(vim.fn.glob(home .. "/lsp/java/vscode-java-test/server/*.jar", true), "\n"))
 local jdtls_config = {
   capabilities = capabilities,
   cmd = {
@@ -24,6 +29,7 @@ local jdtls_config = {
   root_dir = root_dir,
   init_options = {
     extendedClientCapabilities = jdtls.extendedClientCapabilities,
+    bundles = bundles,
   },
   settings = {
     configuration = {

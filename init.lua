@@ -172,6 +172,15 @@ wk.register({
     },
 
     b = { "<cmd>Telescope builtin<cr>", "List Built-in pickers and run them on <cr>" },
+
+    d = {
+      name = "+debug",
+      b = { "<cmd>lua require'dap'.toggle_breakpoint()<cr>", "Toggle Breakpoint" },
+      c = { "<cmd>lua require'dap'.continue()<cr>", "Resume Execution" },
+      o = { "<cmd>lua require'dap'.step_over()<cr>", "Step Over Code" },
+      i = { "<cmd>lua require'dap'.step_into()<cr>", "Step Into Code" },
+      v = { "<cmd>lua require'dap'.repl.open()<cr>", "Inspect REPL State" },
+    },
   },
 
   g = {

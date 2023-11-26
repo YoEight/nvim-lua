@@ -98,6 +98,11 @@ return {
   },
   'mfussenegger/nvim-jdtls',
 
+  {
+    'mfussenegger/nvim-dap',
+    version = "0.7.0",
+  },
+
   -- Code completion
   "neovim/nvim-lspconfig",
   "hrsh7th/cmp-nvim-lsp",
