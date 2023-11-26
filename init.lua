@@ -33,7 +33,6 @@ local auto_cmds = {
   ["FileType"] = {
     lua    = "setlocal tabstop=2 shiftwidth=2 expandtab",
     rust   = "setlocal tabstop=4 shiftwidth=4 expandtab",
-    java   = "setlocal tabstop=4 shiftwidth=4 expandtab",
     csharp = "setlocal tabstop=4 shiftwidth=4 expandtab",
     go     = "setlocal tabstop=4 shiftwidth=4 expandtab",
   }
@@ -112,65 +111,7 @@ local lsp_servers = {
   },
 }
 
--- Specific install instructions for JTDLS (Java Language Server).
-local java_root_markers = { "gradlew", ".git" }
-local root_dir = vim.fs.dirname(vim.fs.find(java_root_markers, { upward = true })[1])
-local java_workspace_folder = home .. "/.local/share/eclipse/" .. vim.fn.fnamemodify(root_dir, "p:h:t")
-local jdtls = require("jdtls")
-local jdtls_config = {
-  capabilities = capabilities,
-  cmd = {
-    "/usr/lib/jvm/java-17-openjdk-amd64/bin/java",
-    '-Declipse.application=org.eclipse.jdt.ls.core.id1',
-    '-Dosgi.bundles.defaultStartLevel=4',
-    '-Declipse.product=org.eclipse.jdt.ls.core.product',
-    '-Dlog.protocol=true',
-    '-Dlog.level=ALL',
-    '-Xmx1g',
-    '--add-modules=ALL-SYSTEM',
-    '--add-opens', 'java.base/java.util=ALL-UNNAMED',
-    '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
-    '-jar', home .. '/lsp/java/plugins/org.eclipse.equinox.launcher_1.6.500.v20230717-2134.jar',
-    '-configuration', home .. '/lsp/java/config_linux',
-    '-data', java_workspace_folder,
-  },
-  root_dir = root_dir,
-  init_options = {
-    extendedClientCapabilities = jdtls.extendedClientCapabilities,
-  },
-  settings = {
-    configuration = {
-      runtimes = {
-        {
-          name = "JDK 11",
-          path = "/usr/lib/jvm/java-11-openjdk-amd64/",
-        },
-        {
-          name = "JDK 17",
-          path = "/usr/lib/jvm/java-17-openjdk-amd64/",
-        },
-      }
-    },
-  },
-}
-
 local wk = require("which-key")
-
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "java",
-  callback = function()
-    wk.register({
-      ["<leader>"] = {
-        t = {
-          name = "+test",
-          c = { "<cmd>lua require'jdtls'.test_class()<cr>", "Run Java Test Class" },
-          n = { "<cmd>lua require'jdtls'.test_nearest_method()<cr>", "Run Nearest Java Method Test Class" },
-        }
-      },
-    })
-    jdtls.start_or_attach(jdtls_config)
-  end,
-})
 
 local lsp = require("lspconfig")
 for server, args in pairs(lsp_servers) do
