@@ -111,11 +111,57 @@ local lsp_servers = {
   },
 }
 
+local dap_adapters = {
+  codelldb = {
+    type = "server",
+    port = "13000",
+    executable = {
+      command = home .. "/lsp/codelldb/extension/adapter/codelldb",
+      args = { "--port", "13000" },
+    }
+  }
+}
+
+local dap_configurations = {
+  rust = {
+    {
+      name = "Launch file",
+      type = "codelldb",
+      request = "launch",
+      program = function()
+        return vim.fn.input({
+          prompt = "Path to executable: ",
+          default = vim.fn.getcwd() .. "/",
+          completion = "file",
+        })
+      end,
+      cwd = "${workspaceFolder}",
+      stopOnEntry = false,
+    },
+    {
+      name = "Attach to process",
+      type = "codelldb",
+      request = "attach",
+      pid = require("dap.utils").pick_process,
+      args = {},
+    },
+  },
+}
+
 local wk = require("which-key")
 
 local lsp = require("lspconfig")
 for server, args in pairs(lsp_servers) do
   lsp[server].setup(args)
+end
+
+local dap = require("dap")
+for adapter, args in pairs(dap_adapters) do
+  dap.adapters[adapter] = args
+end
+
+for configuration, args in pairs(dap_configurations) do
+  dap.configurations[configuration] = args
 end
 
 wk.register({
@@ -134,7 +180,7 @@ wk.register({
       ["<"] = { ":vert res -10<cr>", "Decrease focused split columns by 10" },
       [">"] = { ":vert res +10<cr>", "Increase focused split columns by 10" },
       ["-"] = { ":res res -10<cr>", "Decrease focused split rows by 10" },
-      ["+"] = { ":res res -10<cr>", "Increase focused split rows by 10" },
+      ["+"] = { ":res res +10<cr>", "Increase focused split rows by 10" },
     },
 
     f = {
@@ -148,7 +194,8 @@ wk.register({
       m = { "<cmd>Telescope man_pages<cr>", "List manpage entries" },
       c = {
         name = "+config",
-        o = { ":e ~/.config/nvim/init.lua<cr>", "Open config file" },
+        o = { ":e ~/.config/nvim/init.lua<cr>", "Open Config file" },
+        p = { ":e ~/.config/nvim/lua/plugins.lua<cr>", "Open Plugins file" },
       }
     },
 
@@ -180,6 +227,7 @@ wk.register({
       o = { "<cmd>lua require'dap'.step_over()<cr>", "Step Over Code" },
       i = { "<cmd>lua require'dap'.step_into()<cr>", "Step Into Code" },
       v = { "<cmd>lua require'dap'.repl.open()<cr>", "Inspect REPL State" },
+      t = { "<cmd>lua require'dapui'.toggle()<cr>", "Toggle Dap UI"},
     },
   },
 

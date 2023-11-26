@@ -29,7 +29,12 @@ return {
   },
   {
     "folke/neodev.nvim",
-    opts = {},
+    opts = {
+      library = {
+        plugins = { "nvim-dap-ui" },
+        types = true,
+      },
+    },
   },
   "neovim/nvim-lspconfig",
   "tpope/vim-commentary",
@@ -98,9 +103,14 @@ return {
   },
   'mfussenegger/nvim-jdtls',
 
+  -- Debugging via DAP
   {
     'mfussenegger/nvim-dap',
     version = "0.7.0",
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    config = true,
   },
 
   -- Code completion
