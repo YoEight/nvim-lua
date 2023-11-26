@@ -1,4 +1,4 @@
 Personal NeoVim configuration
 =================================
 
-This configuration expects Neovim at least 8.2.
+This configuration expects Neovim >= 0.9.4
