@@ -1,18 +1,24 @@
 local home = os.getenv("HOME")
+local jdtls_home = os.getenv("JDTLS_HOME")
+local jdtls_launcher = os.getenv("JDTLS_LAUNCHER")
+local java_debug_home = os.getenv("JAVA_DEBUG_HOME")
+local vscode_java_test_home = os.getenv("VSCODE_JAVA_TEST_HOME")
+local jdk11_home = os.getenv("JDK11_HOME")
+local jdk17_home = os.getenv("JDK17_HOME")
 local java_root_markers = { "gradlew", ".git" }
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 local root_dir = vim.fs.dirname(vim.fs.find(java_root_markers, { upward = true })[1])
 local java_workspace_folder = home .. "/.local/share/eclipse/" .. vim.fn.fnamemodify(root_dir, "p:h:t")
 local jdtls = require("jdtls")
 local bundles = {
-  vim.fn.glob(home .. "/lsp/java/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar", true)
+  vim.fn.glob(java_debug_home .. "/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar", true)
 }
 
-vim.list_extend(bundles, vim.split(vim.fn.glob(home .. "/lsp/java/vscode-java-test/server/*.jar", true), "\n"))
+vim.list_extend(bundles, vim.split(vim.fn.glob(vscode_java_test_home .. "/server/*.jar", true), "\n"))
 local jdtls_config = {
   capabilities = capabilities,
   cmd = {
-    "/usr/lib/jvm/java-17-openjdk-amd64/bin/java",
+    jdk17_home .. "/bin/java",
     '-Declipse.application=org.eclipse.jdt.ls.core.id1',
     '-Dosgi.bundles.defaultStartLevel=4',
     '-Declipse.product=org.eclipse.jdt.ls.core.product',
@@ -22,8 +28,8 @@ local jdtls_config = {
     '--add-modules=ALL-SYSTEM',
     '--add-opens', 'java.base/java.util=ALL-UNNAMED',
     '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
-    '-jar', home .. '/lsp/java/plugins/org.eclipse.equinox.launcher_1.6.500.v20230717-2134.jar',
-    '-configuration', home .. '/lsp/java/config_linux',
+    '-jar', jdtls_launcher,
+    '-configuration', jdtls_home .. '/config_linux',
     '-data', java_workspace_folder,
   },
   root_dir = root_dir,
@@ -36,11 +42,11 @@ local jdtls_config = {
       runtimes = {
         {
           name = "JDK 11",
-          path = "/usr/lib/jvm/java-11-openjdk-amd64/",
+          path = jdk11_home,
         },
         {
           name = "JDK 17",
-          path = "/usr/lib/jvm/java-17-openjdk-amd64/",
+          path = jdk17_home,
         },
       }
     },
