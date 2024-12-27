@@ -2,7 +2,7 @@ return {
   {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
-    
+
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-tree/nvim-web-devicons",
@@ -22,7 +22,7 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     branch = "0.1.x",
-    
+
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
@@ -54,7 +54,7 @@ return {
       local configs = require("nvim-treesitter.configs")
 
       configs.setup({
-        ensure_installed = { 
+        ensure_installed = {
           "rust",
           "haskell",
           "java",
@@ -95,7 +95,7 @@ return {
   },
   {
     "akinsho/toggleterm.nvim",
-    version = "v2.8.0",
+    version = "v2.13.0",
     config = true,
     opts = {
       open_mapping = [[<c-\>]],
@@ -106,7 +106,8 @@ return {
   -- Debugging via DAP
   {
     'mfussenegger/nvim-dap',
-    version = "0.7.0",
+    version = "0.9.0",
+    dependencies = { "nvim-neotest/nvim-nio" },
   },
   {
     "rcarriga/nvim-dap-ui",
@@ -125,4 +126,3 @@ return {
   "L3MON4D3/LuaSnip",
   "saadparwaiz1/cmp_luasnip",
 }
-
