@@ -49,7 +49,7 @@ end
 
 require("lazy").setup("plugins")
 
-vim.cmd.colorscheme "catppuccin-mocha"
+vim.cmd.colorscheme "catppuccin-latte"
 
 local cmp = require("cmp")
 
@@ -96,9 +96,11 @@ cmp.setup.cmdline(":", {
 local home = os.getenv("HOME")
 local omnisharp_home = os.getenv("OMNISHARP_HOME")
 local lua_ls_home = os.getenv("LUA_LS_HOME")
+local rust_ls_home = os.getenv("RUST_LS_HOME")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 local lsp_servers = {
   rust_analyzer = {
+    cmd = { rust_ls_home .. "/extension/server/rust-analyzer" },
     capabilities = capabilities,
   },
 
