@@ -62,6 +62,7 @@ return {
           "go",
           "lua",
           "json",
+          "diff",
         },
         sync_install = false,
         highlight = { enable = true },
@@ -125,4 +126,9 @@ return {
   -- luasnip
   "L3MON4D3/LuaSnip",
   "saadparwaiz1/cmp_luasnip",
+
+  { "CopilotC-Nvim/CopilotChat.nvim",
+    dependencies = { "github/copilot.vim"},
+    build = "make tiktoken",
+  },
 }

@@ -25,6 +25,7 @@ vim.o.wildmode = 'list:longest'
 vim.o.showmatch = true
 vim.o.signcolumn = 'yes'
 vim.o.clipboard = 'unnamedplus'
+-- vim.o.completeopt = 'menu,preview,noinsert,popup'
 vim.wo.number = true
 vim.wo.wrap = false
 vim.wo.cursorline = true
@@ -49,7 +50,7 @@ end
 
 require("lazy").setup("plugins")
 
-vim.cmd.colorscheme "catppuccin-latte"
+vim.cmd.colorscheme "catppuccin-mocha"
 
 local cmp = require("cmp")
 
@@ -175,7 +176,19 @@ end
 
 wk.add({
     { "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>", desc = "Show type information help" },
-    { "<leader>a", ":lua vim.lsp.buf.add_workspace_folder()<cr>", desc = "Add Workspace Folder" },
+    { "<leader>a", group = "ai" },
+    {
+      "<leader>ai",
+      function()
+        local input = vim.fn.input("ask copilot: ")
+        if input ~= "" then
+          vim.cmd("CopilotChat " .. input)
+        end
+      end,
+      desc = "Ask Copilot"
+    },
+    { "<leader>at", "<cmd>CopilotChatToggle<cr>", desc = "Toggle Copilot Chat" },
+     -- { "<leader>a", ":lua vim.lsp.buf.add_workspace_folder()<cr>", desc = "Add Workspace Folder" },
     { "<leader>b", "<cmd>Telescope builtin<cr>", desc = "List Built-in pickers and run them on <cr>" },
     { "<leader>c", group = "code" },
     { "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "Code action" },
@@ -223,4 +236,27 @@ wk.add({
     { "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", desc = "Go to declaration" },
     { "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", desc = "Go to definition" },
     { "gr", "<cmd>lua vim.lsp.buf.references()<cr>", desc = "Go to references" },
+})
+
+local copilot = require("CopilotChat")
+copilot.setup({
+  mappings = {
+    complete = {
+      detail = "Use @<Tab> or /<Tab> for options.",
+      insert = "<Tab>",
+    },
+  },
+
+  keys = {
+    {
+      "<leader>ai",
+      function()
+        local input = vim.fn.input("ask copilot: ")
+        if input ~= "" then
+          vim.cmd("CopilotChat " .. input)
+        end
+      end,
+      desc = "Ask Copilot"
+    },
+  }
 })
