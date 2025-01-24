@@ -25,7 +25,7 @@ vim.o.wildmode = 'list:longest'
 vim.o.showmatch = true
 vim.o.signcolumn = 'yes'
 vim.o.clipboard = 'unnamedplus'
--- vim.o.completeopt = 'menu,preview,noinsert,popup'
+vim.o.completeopt = 'menu,preview'
 vim.wo.number = true
 vim.wo.wrap = false
 vim.wo.cursorline = true
@@ -51,7 +51,21 @@ end
 require("lazy").setup("plugins")
 
 vim.cmd.colorscheme "catppuccin-mocha"
+vim.api.nvim_set_option_value('background', 'dark', {})
+-- vim.cmd.colorscheme "github_dark"
 
+-- require('auto-dark-mode').setup({
+-- 	update_interval = 1000,
+-- 	set_dark_mode = function()
+-- 		vim.api.nvim_set_option_value('background', 'dark', {})
+-- 		vim.cmd('colorscheme github_dark_default')
+-- 	end,
+-- 	set_light_mode = function()
+-- 		vim.api.nvim_set_option_value('background', 'light', {})
+-- 		vim.cmd('colorscheme github_light_default')
+-- 	end,
+-- })
+--
 local cmp = require("cmp")
 
 cmp.setup({
@@ -100,10 +114,10 @@ local lua_ls_home = os.getenv("LUA_LS_HOME")
 local rust_ls_home = os.getenv("RUST_LS_HOME")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 local lsp_servers = {
-  rust_analyzer = {
-    cmd = { rust_ls_home .. "/extension/server/rust-analyzer" },
-    capabilities = capabilities,
-  },
+  -- rust_analyzer = {
+  --   cmd = { rust_ls_home .. "/extension/server/rust-analyzer" },
+  --   capabilities = capabilities,
+  -- },
 
   omnisharp = {
     cmd = { "dotnet", omnisharp_home .. "/OmniSharp.dll" },
@@ -147,6 +161,7 @@ local dap_configurations = {
       end,
       cwd = "${workspaceFolder}",
       stopOnEntry = false,
+      sourceLanguages = { "rust" },
     },
     {
       name = "Attach to process",
@@ -174,6 +189,14 @@ for configuration, args in pairs(dap_configurations) do
   dap.configurations[configuration] = args
 end
 
+local neotest = require("neotest")
+neotest.setup({
+  adapters = {
+    require("rustaceanvim.neotest"),
+    require("neotest-dotnet"),
+  },
+})
+
 wk.add({
     { "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>", desc = "Show type information help" },
     { "<leader>a", group = "ai" },
@@ -193,7 +216,7 @@ wk.add({
     { "<leader>c", group = "code" },
     { "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "Code action" },
     { "<leader>cd", "<cmd>Telescope diagnostics<cr>", desc = "List Diagnostics for all open buffers" },
-    { "<leader>cf", "<function 1>", desc = "Format Current Buffer" },
+    { "<leader>cf", "<cmd>lua vim.lsp.buf.format()<cr>", desc = "Format Current Buffer" },
     { "<leader>cl", group = "list" },
     { "<leader>cld", group = "document" },
     { "<leader>clds", "<cmd>Telescope lsp_document_symbols<cr>", desc = "List Document Symbols" },
@@ -207,6 +230,7 @@ wk.add({
     { "<leader>do", "<cmd>lua require'dap'.step_over()<cr>", desc = "Step Over Code" },
     { "<leader>dt", "<cmd>lua require'dapui'.toggle()<cr>", desc = "Toggle Dap UI" },
     { "<leader>dv", "<cmd>lua require'dap'.repl.open()<cr>", desc = "Inspect REPL State" },
+    { "<leader>df", "<cmd>lua require'dapui'.float_element()<cr>", desc = "Floating Element" },
     { "<leader>f", group = "file" },
     { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Find buffers" },
     { "<leader>fc", group = "config" },
@@ -218,6 +242,12 @@ wk.add({
     { "<leader>fn", "<cmd>enew<cr>", desc = "New File" },
     { "<leader>fo", "<cmd>Telescope oldfiles<cr>", desc = "List previously open files" },
     { "<leader>ft", "<cmd>Neotree toggle reveal<cr>", desc = "Toggle NeoTree" },
+    { "<leader>r", group = "run" },
+    { "<leader>rt", "<cmd>lua require('neotest').run.run()<cr>", desc = "run nearest test" },
+    { "<leader>rf", '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<cr>', desc = "run current file tests" },
+    { "<leader>rdt", '<cmd>lua require("neotest").run.run({strategy = "dap"})<cr>', desc = "debug nearest test" },
+    { "<leader>rdf", '<cmd>lua require("neotest").run.run({vim.fn.expand("%"), strategy = "dap"})<cr>', desc = "debug current file tests" },
+    { "<leader>rs", "<cmd>lua require('neotest').summary.toggle()<cr>", desc = "toggle test summary" },
     { "<leader>w", group = "window" },
     { "<leader>w+", ":res res +10<cr>", desc = "Increase focused split rows by 10" },
     { "<leader>w-", ":res res -10<cr>", desc = "Decrease focused split rows by 10" },
@@ -243,7 +273,7 @@ copilot.setup({
   mappings = {
     complete = {
       detail = "Use @<Tab> or /<Tab> for options.",
-      insert = "<Tab>",
+      insert = "",
     },
   },
 

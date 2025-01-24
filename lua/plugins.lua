@@ -70,6 +70,21 @@ return {
       })
     end,
   },
+
+  {
+    'mrcjkb/rustaceanvim',
+    version = '^5', -- Recommended
+    lazy = false,
+    init = function()
+      vim.g.rustaceanvim = {
+        tools = {
+          test_executor = 'background',
+        },
+      }
+    end,
+  },
+
+  -- Colorschemes
   {
     "catppuccin/nvim",
     name = "catppuccin",
@@ -80,12 +95,17 @@ return {
       })
     end,
   },
+
+  { 'projekt0n/github-nvim-theme', name = 'github-theme' },
+  ---
+
   {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
     opts = {},
     config = function()
-      require("ibl").setup()
+      require("ibl").setup({
+      })
     end,
   },
   {
@@ -132,18 +152,20 @@ return {
     build = "make tiktoken",
   },
 
+  "f-person/auto-dark-mode.nvim",
+
+  -- Testing
   {
-    "f-person/auto-dark-mode.nvim",
-    opts = {
-      update_interval = 1000,
-      set_dark_mode = function()
-        vim.api.nvim_set_option_value("background", "dark", {})
-        vim.cmd("colorscheme catppuccin-mocha")
-      end,
-      set_light_mode = function()
-        vim.api.nvim_set_option_value("background", "light", {})
-        vim.cmd("colorscheme catppuccin-latte")
-      end,
-    },
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-neotest/nvim-nio",
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-treesitter/nvim-treesitter"
+    }
   },
+
+  "rouge8/neotest-rust",
+  "Issafalcon/neotest-dotnet",
+  --
 }
