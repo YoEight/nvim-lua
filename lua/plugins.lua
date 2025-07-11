@@ -128,8 +128,8 @@ return {
       require('lspsaga').setup({})
     end,
     dependencies = {
-      'nvim-treesitter/nvim-treesitter',   -- optional
-      'nvim-tree/nvim-web-devicons',       -- optional
+      'nvim-treesitter/nvim-treesitter', -- optional
+      'nvim-tree/nvim-web-devicons',     -- optional
     }
   },
 
@@ -173,6 +173,14 @@ return {
   },
 
   "f-person/auto-dark-mode.nvim",
+
+  {
+    'windwp/nvim-autopairs',
+    event = "InsertEnter",
+    config = true
+    -- use opts = {} for passing setup options
+    -- this is equivalent to setup({}) function
+  },
 
   -- Testing
   {

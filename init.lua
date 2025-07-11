@@ -70,6 +70,8 @@ vim.diagnostic.config({
   virtual_text = false
 });
 
+require('nvim-autopairs').setup({})
+
 
 local lspkind = require('lspkind')
 local cmp = require("cmp")
