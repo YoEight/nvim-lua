@@ -70,6 +70,16 @@ vim.diagnostic.config({
   virtual_text = false
 });
 
+require('lualine').setup({
+  sections = {
+    lualine_x = { "encoding", { "fileformat", symbols = { unix = "" } }, "filetype" },
+  },
+
+  options = {
+    section_separators = { left = '\u{e0b8}', right = '\u{e0ba}' },
+    component_separators = { left = '\u{e0b9}', right = '\u{e0bb}' }
+  }
+})
 require('nvim-autopairs').setup({})
 
 
