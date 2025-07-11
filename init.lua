@@ -132,6 +132,8 @@ cmp.setup.cmdline(":", {
   }),
 })
 
+require('neogit').setup {}
+
 local home = os.getenv("HOME")
 -- local omnisharp_home = os.getenv("OMNISHARP_HOME")
 local lua_ls_home = home .. "/dev_env/lua-language-server"

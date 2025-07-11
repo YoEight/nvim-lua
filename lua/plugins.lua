@@ -100,6 +100,19 @@ return {
   ---
 
   {
+    "NeogitOrg/neogit",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "sindrets/diffview.nvim",
+
+      -- Only one of these is needed.
+      "nvim-telescope/telescope.nvim",
+    },
+  },
+
+  "lewis6991/gitsigns.nvim",
+
+  {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
     opts = {},
