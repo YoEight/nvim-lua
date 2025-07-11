@@ -109,9 +109,9 @@ cmp.setup.cmdline(":", {
 })
 
 local home = os.getenv("HOME")
-local omnisharp_home = os.getenv("OMNISHARP_HOME")
-local lua_ls_home = os.getenv("LUA_LS_HOME")
-local rust_ls_home = os.getenv("RUST_LS_HOME")
+-- local omnisharp_home = os.getenv("OMNISHARP_HOME")
+local lua_ls_home = home .. "/dev_env/lua-language-server"
+-- local rust_ls_home = os.getenv("RUST_LS_HOME")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 local lsp_servers = {
   -- rust_analyzer = {
@@ -119,11 +119,12 @@ local lsp_servers = {
   --   capabilities = capabilities,
   -- },
 
-  omnisharp = {
-    cmd = { "dotnet", omnisharp_home .. "/OmniSharp.dll" },
-    capabilities = capabilities,
-  },
-
+  -- omnisharp = {
+  --   cmd = { "dotnet", omnisharp_home .. "/OmniSharp.dll" },
+  --   capabilities = capabilities,
+  -- },
+  --
+  --
   lua_ls = {
     cmd = { lua_ls_home .. "/bin/lua-language-server" },
     capabilities = capabilities,
@@ -134,7 +135,7 @@ local lsp_servers = {
   },
 }
 
-local codelldb_home = os.getenv("CODELLDB_HOME")
+local codelldb_home = home .. "/dev_env/codelldb"
 local dap_adapters = {
   codelldb = {
     type = "server",
