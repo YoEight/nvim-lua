@@ -65,7 +65,11 @@ vim.api.nvim_set_option_value('background', 'dark', {})
 -- 		vim.cmd('colorscheme github_light_default')
 -- 	end,
 -- })
---
+
+vim.diagnostic.config({
+  virtual_text = false
+});
+
 
 local lspkind = require('lspkind')
 local cmp = require("cmp")
@@ -132,6 +136,7 @@ cmp.setup.cmdline(":", {
   }),
 })
 
+-- require('trouble').setup {}
 require('neogit').setup {}
 
 local home = os.getenv("HOME")
@@ -216,6 +221,33 @@ for configuration, args in pairs(dap_configurations) do
   dap.configurations[configuration] = args
 end
 
+-- Gutter icon configurations
+local signs = {
+    Error = " ",
+    Warn = " ",
+    Hint = "󰌵 ",
+    Info = " "
+}
+
+local signConf = {
+  text = {},
+  texthl = {},
+  numhl = {},
+}
+
+for type, icon in pairs(signs) do
+  local severityName = string.upper(type)
+  local severity = vim.diagnostic.severity[severityName]
+  local hl = "DiagnosticSign" .. type
+  signConf.text[severity] = icon
+  signConf.texthl[severity] = hl
+  signConf.numhl[severity] = hl
+end
+
+vim.diagnostic.config({
+  signs = signConf,
+})
+
 local neotest = require("neotest")
 neotest.setup({
   adapters = {
@@ -226,6 +258,7 @@ neotest.setup({
 
 wk.add({
     { "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>", desc = "Show type information help" },
+    { "<C-\\>", "<cmd>Lspsaga term_toggle<cr>", desc = "Show type information help" },
     { "<leader>a", group = "ai" },
     {
       "<leader>ai",
@@ -241,15 +274,17 @@ wk.add({
      -- { "<leader>a", ":lua vim.lsp.buf.add_workspace_folder()<cr>", desc = "Add Workspace Folder" },
     { "<leader>b", "<cmd>Telescope builtin<cr>", desc = "List Built-in pickers and run them on <cr>" },
     { "<leader>c", group = "code" },
-    { "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "Code action" },
+    { "<leader>ca", "<cmd>Lspsaga code_action<cr>", desc = "Code action" },
     { "<leader>cd", "<cmd>Telescope diagnostics<cr>", desc = "List Diagnostics for all open buffers" },
     { "<leader>cf", "<cmd>lua vim.lsp.buf.format()<cr>", desc = "Format Current Buffer" },
+    { "<leader>co", "<cmd>Lspsaga outline<cr>", desc = "Toggle buffer outline" },
+    { "<leader>cs", "<cmd>Lspsaga finder<cr>", desc = "Show finder window" },
     { "<leader>cl", group = "list" },
     { "<leader>cld", group = "document" },
     { "<leader>clds", "<cmd>Telescope lsp_document_symbols<cr>", desc = "List Document Symbols" },
     { "<leader>clw", group = "workspace" },
     { "<leader>clws", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", desc = "List Workspace Symbols" },
-    { "<leader>cr", "<cmd>lua vim.lsp.buf.rename()<cr>", desc = "Rename symbol" },
+    { "<leader>cr", "<cmd>Lspsaga rename<cr>", desc = "Rename symbol" },
     { "<leader>d", group = "debug" },
     { "<leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<cr>", desc = "Toggle Breakpoint" },
     { "<leader>dc", "<cmd>lua require'dap'.continue()<cr>", desc = "Resume Execution" },
@@ -288,7 +323,7 @@ wk.add({
     { "<leader>ws", ":split<cr>", desc = "Split current window horizontally" },
     { "<leader>wv", ":vsplit<cr>", desc = "Split current window vertically" },
     { "<leader>ww", ":wincmd w<cr>", desc = "Focus to previous window" },
-    { "K", "<cmd>lua vim.lsp.buf.hover()<cr>", desc = "Show type information" },
+    { "K", "<cmd>Lspsaga hover_doc<cr>", desc = "Show type information" },
     { "g", group = "go" },
     { "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", desc = "Go to declaration" },
     { "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", desc = "Go to definition" },

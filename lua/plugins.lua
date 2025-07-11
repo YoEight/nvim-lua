@@ -121,20 +121,25 @@ return {
       })
     end,
   },
+
+  {
+    'nvimdev/lspsaga.nvim',
+    config = function()
+      require('lspsaga').setup({})
+    end,
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',   -- optional
+      'nvim-tree/nvim-web-devicons',       -- optional
+    }
+  },
+
   {
     "numToStr/Comment.nvim",
     config = function()
       require("Comment").setup()
     end,
   },
-  {
-    "akinsho/toggleterm.nvim",
-    version = "v2.13.0",
-    config = true,
-    opts = {
-      open_mapping = [[<c-\>]],
-    },
-  },
+
   'mfussenegger/nvim-jdtls',
 
   -- Debugging via DAP
@@ -161,8 +166,9 @@ return {
   "L3MON4D3/LuaSnip",
   "saadparwaiz1/cmp_luasnip",
 
-  { "CopilotC-Nvim/CopilotChat.nvim",
-    dependencies = { "github/copilot.vim"},
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    dependencies = { "github/copilot.vim" },
     build = "make tiktoken",
   },
 
