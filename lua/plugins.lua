@@ -79,15 +79,8 @@ return {
 
   {
     'mrcjkb/rustaceanvim',
-    version = '^5', -- Recommended
+    version = '^6', -- Recommended
     lazy = false,
-    init = function()
-      vim.g.rustaceanvim = {
-        tools = {
-          test_executor = 'background',
-        },
-      }
-    end,
   },
 
   -- Colorschemes
@@ -151,7 +144,7 @@ return {
   -- Debugging via DAP
   {
     'mfussenegger/nvim-dap',
-    version = "0.9.0",
+    version = "0.10.0",
     dependencies = { "nvim-neotest/nvim-nio" },
   },
   {
