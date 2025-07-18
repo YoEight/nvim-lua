@@ -94,8 +94,6 @@ return {
       })
     end,
   },
-
-  { 'projekt0n/github-nvim-theme', name = 'github-theme' },
   ---
 
   {
@@ -170,8 +168,6 @@ return {
     dependencies = { "github/copilot.vim" },
     build = "make tiktoken",
   },
-
-  "f-person/auto-dark-mode.nvim",
 
   {
     'windwp/nvim-autopairs',
