@@ -50,8 +50,7 @@ end
 
 require("lazy").setup("plugins")
 
-vim.cmd.colorscheme "catppuccin-mocha"
-vim.api.nvim_set_option_value('background', 'dark', {})
+vim.cmd.colorscheme "catppuccin"
 
 vim.diagnostic.config({
   virtual_text = false

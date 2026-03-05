@@ -10,7 +10,8 @@ return {
     },
   },
 
-  { 'andymass/vim-matchup',
+  {
+    'andymass/vim-matchup',
     init = function()
       require('match-up').setup({
         treesitter = {
@@ -36,7 +37,8 @@ return {
     opts = {},
   },
   {
-    "nvim-telescope/telescope.nvim", version = '0.2.1',
+    "nvim-telescope/telescope.nvim",
+    version = '0.2.1',
 
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -75,6 +77,11 @@ return {
     lazy = false,
   },
 
+  {
+    "f-person/auto-dark-mode.nvim",
+    opts = {}
+  },
+
   -- Colorschemes
   {
     "catppuccin/nvim",
@@ -83,6 +90,10 @@ return {
     config = function()
       require("catppuccin").setup({
         no_italic = true,
+        background = {
+          light = "latte",
+          dark = "mocha",
+        }
       })
     end,
   },
