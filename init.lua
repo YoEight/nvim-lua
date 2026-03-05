@@ -151,7 +151,7 @@ require('nvim-treesitter').setup {
   -- Directory to install parsers and queries
   install_dir = vim.fn.stdpath('data') .. '/site'
 }
-require('nvim-treesitter').install({ 'rust', 'haskell', 'java', 'c_sharp', 'go', 'lua', 'json', 'diff'  })
+require('nvim-treesitter').install({ 'rust', 'haskell', 'java', 'c_sharp', 'go', 'lua', 'json', 'diff' })
 
 local home = os.getenv("HOME")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -223,13 +223,13 @@ local wk = require("which-key")
 vim.lsp.enable('lua_ls')
 vim.lsp.enable('gopls')
 -- vim.lsp.config('lua_ls', {
-  -- capabilities = capabilities,
-  -- on_attach = on_attach,
+-- capabilities = capabilities,
+-- on_attach = on_attach,
 -- })
 
 -- vim.lsp.config('gopls', {
-  -- capabilities = capabilities,
-  -- on_attach = on_attach,
+-- capabilities = capabilities,
+-- on_attach = on_attach,
 -- })
 
 local dap = require("dap")
@@ -284,16 +284,16 @@ neotest.setup({
 
 wk.add({
   { ",",           "<cmd>noh<cr>" },
-  { "<C-\\>",      "<cmd>Lspsaga term_toggle<cr>",                                                    desc = "Toggle terminal",                      mode = { "n", "t" } },
+  { "<C-\\>",      "<cmd>Lspsaga term_toggle<cr>",                                                    desc = "Toggle terminal",                                 mode = { "n", "t" } },
   -- { "<leader>k", "<cmd>lua vim.lsp.buf.signature_help()<cr>", desc = "Show type information help" },
-  { "<leader>K",   "<cmd>Lspsaga hover_doc<cr>",                                                      desc = "Show type information" },
+  { "<leader>k",   "<cmd>Lspsaga hover_doc<cr>",                                                      desc = "Show type information" },
   { "<leader>a",   "<cmd>Lspsaga code_action<cr>",                                                    desc = "Code action" },
   -- { "<leader>a", ":lua vim.lsp.buf.add_workspace_folder()<cr>", desc = "Add Workspace Folder" },
   { "<leader>b",   "<cmd>Telescope buffers<cr>",                                                      desc = "Find buffers" },
-  { "<leader>c",   "gcc",                                                                             desc = "Comment/uncomment selections",         remap = true },
+  { "<leader>c",   "gcc",                                                                             desc = "Comment/uncomment selections",                    remap = true },
   { "<leader>g",   "<cmd>Neogit<cr>",                                                                 desc = "git" },
   -- { "<leader>c", group = "code" },
-  -- { "<leader>co", "<cmd>Lspsaga outline<cr>", desc = "Toggle buffer outline" },
+  { "<leader>o",   "<cmd>Lspsaga outline<cr>",                                                        desc = "Toggle buffer outline" },
   { "<leader>d",   "<cmd>Telescope diagnostics<cr>",                                                  desc = "List Diagnostics for all open buffers" },
   { "<leader>f",   "<cmd>Telescope find_files<cr>",                                                   desc = "Find files" },
   { "<leader>r",   "<cmd>Lspsaga rename<cr>",                                                         desc = "Rename symbol" },
@@ -311,13 +311,13 @@ wk.add({
   { "<leader>Dv",  "<cmd>lua require'dap'.repl.open()<cr>",                                           desc = "Inspect REPL State" },
   { "<leader>Df",  "<cmd>lua require'dapui'.float_element()<cr>",                                     desc = "Floating Element" },
   -- { "<leader>f", group = "file" },
-  -- { "<leader>fc", group = "config" },
-  -- { "<leader>fco", ":e ~/.config/nvim/init.lua<cr>", desc = "Open Config file" },
-  -- { "<leader>fcp", ":e ~/.config/nvim/lua/plugins.lua<cr>", desc = "Open Plugins file" },
-  -- { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Search for a string in current working directory" },
+  { "<leader>C",   group = "config" },
+  { "<leader>Co",  ":e ~/.config/nvim/init.lua<cr>",                                                  desc = "Open Config file" },
+  { "<leader>Cp",  ":e ~/.config/nvim/lua/plugins.lua<cr>",                                           desc = "Open Plugins file" },
+  { "<leader>/",   "<cmd>Telescope live_grep<cr>",                                                    desc = "Search for a string in current working directory" },
   -- { "<leader>fm", "<cmd>Telescope man_pages<cr>", desc = "List manpage entries" },
   -- { "<leader>fn", "<cmd>enew<cr>", desc = "New File" },
-  { "m",           "%",                                                                               desc = "Go to matching bracket",               remap = true },
+  { "m",           "%",                                                                               desc = "Go to matching bracket",                          remap = true },
   { "<leader>R",   group = "run" },
   { "<leader>Rt",  "<cmd>lua require('neotest').run.run()<cr>",                                       desc = "run nearest test" },
   { "<leader>Rf",  '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<cr>',                     desc = "run current file tests" },
