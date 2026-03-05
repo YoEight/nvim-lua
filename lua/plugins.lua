@@ -36,8 +36,7 @@ return {
     opts = {},
   },
   {
-    "nvim-telescope/telescope.nvim",
-    branch = "0.1.x",
+    "nvim-telescope/telescope.nvim", version = '0.2.1',
 
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -63,28 +62,11 @@ return {
       "hrsh7th/cmp-buffer",
     },
   },
+
   {
     "nvim-treesitter/nvim-treesitter",
+    lazy = false,
     build = ":TSUpdate",
-    config = function()
-      local configs = require("nvim-treesitter.configs")
-
-      configs.setup({
-        ensure_installed = {
-          "rust",
-          "haskell",
-          "java",
-          "c_sharp",
-          "go",
-          "lua",
-          "json",
-          "diff",
-        },
-        sync_install = false,
-        highlight = { enable = true },
-        indent = { enable = true },
-      })
-    end,
   },
 
   {

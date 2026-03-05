@@ -147,6 +147,12 @@ local on_attach = function(client, bufnr)
   })
 end
 
+require('nvim-treesitter').setup {
+  -- Directory to install parsers and queries
+  install_dir = vim.fn.stdpath('data') .. '/site'
+}
+require('nvim-treesitter').install({ 'rust', 'haskell', 'java', 'c_sharp', 'go', 'lua', 'json', 'diff'  })
+
 local home = os.getenv("HOME")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 local lsp_servers = {
@@ -189,7 +195,7 @@ local dap_configurations = {
   rust = {
     {
       name = "Launch file",
-      type = "codelldb",
+      type = "codelld",
       request = "launch",
       program = function()
         return vim.fn.input({
@@ -214,10 +220,17 @@ local dap_configurations = {
 
 local wk = require("which-key")
 
-local lsp = require("lspconfig")
-for server, args in pairs(lsp_servers) do
-  lsp[server].setup(args)
-end
+vim.lsp.enable('lua_ls')
+vim.lsp.enable('gopls')
+-- vim.lsp.config('lua_ls', {
+  -- capabilities = capabilities,
+  -- on_attach = on_attach,
+-- })
+
+-- vim.lsp.config('gopls', {
+  -- capabilities = capabilities,
+  -- on_attach = on_attach,
+-- })
 
 local dap = require("dap")
 for adapter, args in pairs(dap_adapters) do
