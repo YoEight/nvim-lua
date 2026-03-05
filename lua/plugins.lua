@@ -10,6 +10,16 @@ return {
     },
   },
 
+  { 'andymass/vim-matchup',
+    init = function()
+      require('match-up').setup({
+        treesitter = {
+          stopline = 500
+        }
+      })
+    end
+  },
+
   {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' }

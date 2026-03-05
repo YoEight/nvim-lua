@@ -286,6 +286,7 @@ wk.add({
     -- { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Search for a string in current working directory" },
     -- { "<leader>fm", "<cmd>Telescope man_pages<cr>", desc = "List manpage entries" },
     -- { "<leader>fn", "<cmd>enew<cr>", desc = "New File" },
+    { "m", "%", desc = "Go to matching bracket", remap = true },
     { "<leader>R", group = "run" },
     { "<leader>Rt", "<cmd>lua require('neotest').run.run()<cr>", desc = "run nearest test" },
     { "<leader>Rf", '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<cr>', desc = "run current file tests" },
