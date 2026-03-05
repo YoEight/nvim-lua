@@ -139,9 +139,6 @@ cmp.setup.cmdline(":", {
 require('neogit').setup {}
 
 local home = os.getenv("HOME")
--- local omnisharp_home = os.getenv("OMNISHARP_HOME")
-local lua_ls_home = home .. "/dev_env/lua-language-server"
--- local rust_ls_home = os.getenv("RUST_LS_HOME")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 local lsp_servers = {
   -- rust_analyzer = {
@@ -156,7 +153,7 @@ local lsp_servers = {
   --
   --
   lua_ls = {
-    cmd = { lua_ls_home .. "/bin/lua-language-server" },
+    --cmd = { lua_ls_home .. "/bin/lua-language-server" },
     capabilities = capabilities,
   },
 
@@ -256,59 +253,45 @@ neotest.setup({
 })
 
 wk.add({
-    { "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>", desc = "Show type information help" },
-    { "<C-\\>", "<cmd>Lspsaga term_toggle<cr>", desc = "Show type information help" },
-    { "<leader>a", group = "ai" },
-    {
-      "<leader>ai",
-      function()
-        local input = vim.fn.input("ask copilot: ")
-        if input ~= "" then
-          vim.cmd("CopilotChat " .. input)
-        end
-      end,
-      desc = "Ask Copilot"
-    },
-    { "<leader>at", "<cmd>CopilotChatToggle<cr>", desc = "Toggle Copilot Chat" },
+    { ",", "<cmd>noh<cr>" },
+    { "<C-\\>", "<cmd>Lspsaga term_toggle<cr>", desc = "Toggle terminal", mode = { "n", "t" } },
+    -- { "<leader>k", "<cmd>lua vim.lsp.buf.signature_help()<cr>", desc = "Show type information help" },
+    { "<leader>K", "<cmd>Lspsaga hover_doc<cr>", desc = "Show type information" },
+    { "<leader>a", "<cmd>Lspsaga code_action<cr>", desc = "Code action" },
      -- { "<leader>a", ":lua vim.lsp.buf.add_workspace_folder()<cr>", desc = "Add Workspace Folder" },
-    { "<leader>b", "<cmd>Telescope builtin<cr>", desc = "List Built-in pickers and run them on <cr>" },
-    { "<leader>c", group = "code" },
-    { "<leader>ca", "<cmd>Lspsaga code_action<cr>", desc = "Code action" },
-    { "<leader>cd", "<cmd>Telescope diagnostics<cr>", desc = "List Diagnostics for all open buffers" },
-    { "<leader>cf", "<cmd>lua vim.lsp.buf.format()<cr>", desc = "Format Current Buffer" },
-    { "<leader>co", "<cmd>Lspsaga outline<cr>", desc = "Toggle buffer outline" },
-    { "<leader>cs", "<cmd>Lspsaga finder<cr>", desc = "Show finder window" },
-    { "<leader>cl", group = "list" },
-    { "<leader>cld", group = "document" },
-    { "<leader>clds", "<cmd>Telescope lsp_document_symbols<cr>", desc = "List Document Symbols" },
-    { "<leader>clw", group = "workspace" },
-    { "<leader>clws", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", desc = "List Workspace Symbols" },
-    { "<leader>cr", "<cmd>Lspsaga rename<cr>", desc = "Rename symbol" },
-    { "<leader>d", group = "debug" },
-    { "<leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<cr>", desc = "Toggle Breakpoint" },
-    { "<leader>dc", "<cmd>lua require'dap'.continue()<cr>", desc = "Resume Execution" },
-    { "<leader>di", "<cmd>lua require'dap'.step_into()<cr>", desc = "Step Into Code" },
-    { "<leader>do", "<cmd>lua require'dap'.step_over()<cr>", desc = "Step Over Code" },
-    { "<leader>dt", "<cmd>lua require'dapui'.toggle()<cr>", desc = "Toggle Dap UI" },
-    { "<leader>dv", "<cmd>lua require'dap'.repl.open()<cr>", desc = "Inspect REPL State" },
-    { "<leader>df", "<cmd>lua require'dapui'.float_element()<cr>", desc = "Floating Element" },
-    { "<leader>f", group = "file" },
-    { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Find buffers" },
-    { "<leader>fc", group = "config" },
-    { "<leader>fco", ":e ~/.config/nvim/init.lua<cr>", desc = "Open Config file" },
-    { "<leader>fcp", ":e ~/.config/nvim/lua/plugins.lua<cr>", desc = "Open Plugins file" },
-    { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find files" },
-    { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Search for a string in current working directory" },
-    { "<leader>fm", "<cmd>Telescope man_pages<cr>", desc = "List manpage entries" },
-    { "<leader>fn", "<cmd>enew<cr>", desc = "New File" },
-    { "<leader>fo", "<cmd>Telescope oldfiles<cr>", desc = "List previously open files" },
-    { "<leader>ft", "<cmd>Neotree toggle reveal<cr>", desc = "Toggle NeoTree" },
-    { "<leader>r", group = "run" },
-    { "<leader>rt", "<cmd>lua require('neotest').run.run()<cr>", desc = "run nearest test" },
-    { "<leader>rf", '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<cr>', desc = "run current file tests" },
-    { "<leader>rdt", '<cmd>lua require("neotest").run.run({strategy = "dap"})<cr>', desc = "debug nearest test" },
-    { "<leader>rdf", '<cmd>lua require("neotest").run.run({vim.fn.expand("%"), strategy = "dap"})<cr>', desc = "debug current file tests" },
-    { "<leader>rs", "<cmd>lua require('neotest').summary.toggle()<cr>", desc = "toggle test summary" },
+    { "<leader>b", "<cmd>Telescope buffers<cr>", desc = "Find buffers" },
+    { "<leader>c", "gcc", desc = "Comment/uncomment selections", remap = true },
+    -- { "<leader>c", group = "code" },
+    -- { "<leader>co", "<cmd>Lspsaga outline<cr>", desc = "Toggle buffer outline" },
+    { "<leader>d", "<cmd>Telescope diagnostics<cr>", desc = "List Diagnostics for all open buffers" },
+    { "<leader>f", "<cmd>Telescope find_files<cr>", desc = "Find files" },
+    { "<leader>r", "<cmd>Lspsaga rename<cr>", desc = "Rename symbol" },
+    { "<leader>s", "<cmd>Telescope lsp_document_symbols<cr>", desc = "List Document Symbols" },
+    { "<leader>S", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", desc = "List Workspace Symbols" },
+    { "<leader>t", "<cmd>Neotree toggle reveal<cr>", desc = "Toggle NeoTree" },
+    { "<leader>y", "+y", desc = "Yank selections to clipboard" },
+    -- { "<leader>cf", "<cmd>lua vim.lsp.buf.format()<cr>", desc = "Format Current Buffer" },
+    { "<leader>D", group = "debug" },
+    { "<leader>Db", "<cmd>lua require'dap'.toggle_breakpoint()<cr>", desc = "Toggle Breakpoint" },
+    { "<leader>Dc", "<cmd>lua require'dap'.continue()<cr>", desc = "Resume Execution" },
+    { "<leader>Di", "<cmd>lua require'dap'.step_into()<cr>", desc = "Step Into Code" },
+    { "<leader>Do", "<cmd>lua require'dap'.step_over()<cr>", desc = "Step Over Code" },
+    { "<leader>Dt", "<cmd>lua require'dapui'.toggle()<cr>", desc = "Toggle Dap UI" },
+    { "<leader>Dv", "<cmd>lua require'dap'.repl.open()<cr>", desc = "Inspect REPL State" },
+    { "<leader>Df", "<cmd>lua require'dapui'.float_element()<cr>", desc = "Floating Element" },
+    -- { "<leader>f", group = "file" },
+    -- { "<leader>fc", group = "config" },
+    -- { "<leader>fco", ":e ~/.config/nvim/init.lua<cr>", desc = "Open Config file" },
+    -- { "<leader>fcp", ":e ~/.config/nvim/lua/plugins.lua<cr>", desc = "Open Plugins file" },
+    -- { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Search for a string in current working directory" },
+    -- { "<leader>fm", "<cmd>Telescope man_pages<cr>", desc = "List manpage entries" },
+    -- { "<leader>fn", "<cmd>enew<cr>", desc = "New File" },
+    { "<leader>R", group = "run" },
+    { "<leader>Rt", "<cmd>lua require('neotest').run.run()<cr>", desc = "run nearest test" },
+    { "<leader>Rf", '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<cr>', desc = "run current file tests" },
+    { "<leader>Rdt", '<cmd>lua require("neotest").run.run({strategy = "dap"})<cr>', desc = "debug nearest test" },
+    { "<leader>Rdf", '<cmd>lua require("neotest").run.run({vim.fn.expand("%"), strategy = "dap"})<cr>', desc = "debug current file tests" },
+    { "<leader>Rs", "<cmd>lua require('neotest').summary.toggle()<cr>", desc = "toggle test summary" },
     { "<leader>w", group = "window" },
     { "<leader>w+", ":res res +10<cr>", desc = "Increase focused split rows by 10" },
     { "<leader>w-", ":res res -10<cr>", desc = "Decrease focused split rows by 10" },
@@ -322,11 +305,14 @@ wk.add({
     { "<leader>ws", ":split<cr>", desc = "Split current window horizontally" },
     { "<leader>wv", ":vsplit<cr>", desc = "Split current window vertically" },
     { "<leader>ww", ":wincmd w<cr>", desc = "Focus to previous window" },
-    { "K", "<cmd>Lspsaga hover_doc<cr>", desc = "Show type information" },
     { "g", group = "go" },
+    { "gh", "0", desc = "Go to line start" },
+    { "gl", "$", desc = "Go to line end" },
+    { "gs", "^", desc = "Go to first non-blank in line" },
+    { "ge", "G", desc = "Go to last line" },
     { "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", desc = "Go to declaration" },
     { "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", desc = "Go to definition" },
-    { "gr", "<cmd>lua vim.lsp.buf.references()<cr>", desc = "Go to references" },
+    { "gr", "<cmd>Lspsaga finder<cr>", desc = "Go to references" },
 })
 
 local copilot = require("CopilotChat")
