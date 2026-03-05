@@ -261,6 +261,7 @@ wk.add({
      -- { "<leader>a", ":lua vim.lsp.buf.add_workspace_folder()<cr>", desc = "Add Workspace Folder" },
     { "<leader>b", "<cmd>Telescope buffers<cr>", desc = "Find buffers" },
     { "<leader>c", "gcc", desc = "Comment/uncomment selections", remap = true },
+    { "<leader>g", "<cmd>Neogit<cr>", desc = "git" },
     -- { "<leader>c", group = "code" },
     -- { "<leader>co", "<cmd>Lspsaga outline<cr>", desc = "Toggle buffer outline" },
     { "<leader>d", "<cmd>Telescope diagnostics<cr>", desc = "List Diagnostics for all open buffers" },
