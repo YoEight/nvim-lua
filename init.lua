@@ -155,30 +155,6 @@ require('nvim-treesitter').install({ 'rust', 'haskell', 'java', 'c_sharp', 'go',
 
 local home = os.getenv("HOME")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
-local lsp_servers = {
-  -- rust_analyzer = {
-  --   cmd = { rust_ls_home .. "/extension/server/rust-analyzer" },
-  --   capabilities = capabilities,
-  -- },
-
-  -- omnisharp = {
-  --   cmd = { "dotnet", omnisharp_home .. "/OmniSharp.dll" },
-  --   capabilities = capabilities,
-  -- },
-  --
-  --
-  lua_ls = {
-    --cmd = { lua_ls_home .. "/bin/lua-language-server" },
-    capabilities = capabilities,
-    on_attach = on_attach,
-  },
-
-  gopls = {
-    capabilities = capabilities,
-    on_attach = on_attach,
-  },
-}
-
 local codelldb_home = home .. "/dev_env/codelldb"
 local dap_adapters = {
   codelldb = {
@@ -220,17 +196,27 @@ local dap_configurations = {
 
 local wk = require("which-key")
 
+-- support auto formatting when an LSP is up
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('my.lsp', {}),
+  callback = function(args)
+    local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+
+    if not client:supports_method('textDocument/willSaveWaitUntil')
+        and client:supports_method('textDocument/formatting') then
+      vim.api.nvim_create_autocmd('BufWritePre', {
+        group = vim.api.nvim_create_augroup('my.lsp', { clear = false }),
+        buffer = args.buf,
+        callback = function()
+          vim.lsp.buf.format({ bufnr = args.buf, id = client.id, timeout_ms = 1000 })
+        end,
+      })
+    end
+  end
+})
+
 vim.lsp.enable('lua_ls')
 vim.lsp.enable('gopls')
--- vim.lsp.config('lua_ls', {
--- capabilities = capabilities,
--- on_attach = on_attach,
--- })
-
--- vim.lsp.config('gopls', {
--- capabilities = capabilities,
--- on_attach = on_attach,
--- })
 
 local dap = require("dap")
 for adapter, args in pairs(dap_adapters) do
@@ -267,12 +253,6 @@ end
 vim.diagnostic.config({
   signs = signConf,
 })
-
-vim.g.rustaceanvim = {
-  server = {
-    on_attach = on_attach,
-  }
-}
 
 local neotest = require("neotest")
 neotest.setup({
