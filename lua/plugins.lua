@@ -53,7 +53,9 @@ return {
       },
     },
   },
+
   "neovim/nvim-lspconfig",
+
   "tpope/vim-commentary",
   {
     "hrsh7th/nvim-cmp",
@@ -63,6 +65,13 @@ return {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
     },
+  },
+
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy",
+    priority = 1000,
+    opts = {},
   },
 
   {
