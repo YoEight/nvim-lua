@@ -36,6 +36,7 @@ local auto_cmds = {
     rust   = "setlocal tabstop=4 shiftwidth=4 expandtab",
     csharp = "setlocal tabstop=4 shiftwidth=4 expandtab",
     go     = "setlocal tabstop=4 shiftwidth=4 expandtab",
+    json   = "setlocal tabstop=2 shiftwidth=2 expandtab",
   }
 }
 
@@ -216,6 +217,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 vim.lsp.enable('lua_ls')
 vim.lsp.enable('gopls')
+vim.lsp.enable('jsonls')
+vim.lsp.enable('taplo')
 
 local dap = require("dap")
 for adapter, args in pairs(dap_adapters) do
